@@ -1,0 +1,59 @@
+{
+  "name": "node-api-testing-examples",
+  "version": "1.0.0",
+  "description": "Node API testing examples.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jest",
+    "dev": "nodemon --exec npm start",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/onildoaguiar/node-api-testing-examples.git"
+  },
+  "keywords": [
+    "api",
+    "user",
+    "book",
+    "authentication",
+    "express",
+    "node",
+    "test",
+    "javascript"
+  ],
+  "author": "Onildo Aguiar <onildo.aguiar@live.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/onildoaguiar/node-api-testing-examples/issues"
+  },
+  "homepage": "https://github.com/onildoaguiar/node-api-testing-examples#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "crypto-js": "^3.1.9-1",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
+    "express-authorization-bearer": "^1.0.2",
+    "jsonwebtoken": "^8.2.0",
+    "mongoose": "^5.0.10"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.0",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "jest": "^22.4.2",
+    "nodemon": "^1.17.2",
+    "supertest": "^3.0.0"
+  },
+  "jest": {
+    "testURL": "http://localhost"
+  }
+}
