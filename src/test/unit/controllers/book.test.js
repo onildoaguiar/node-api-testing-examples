@@ -1,20 +1,30 @@
 'use strict'
 
-const Controller = require('../../../controllers/book')
+const controller = require('../../../controllers/book')
+const book = require('../../../models/book')
 //const Fixtures = require('./__fixtures__')
 
-jest.mock('../../../controllers/book', () => jest.fn( () => ({_id: '1', title: 'test1'})))
+describe('Controllers: Book', () => {
+    beforeAll(async () => {
+        book.findOne = jest.fn().mockReturnValue(({ _id: '1', title: 'test1' }))
+        book.create = jest.fn().mockReturnValue(({ _id: '1', title: 'test1' }))
+        book.deleteOne = jest.fn().mockReturnValue({ message: 'Book id: 1 was deleted' })
+        book.findOneAndUpdate = jest.fn().mockReturnValue(({ _id: '1', title: 'test1' }))
+    })
 
-describe('User Authentication', () => {
-  let request
+    it('Create one book: create()', async () => {
+        expect(controller.create({ body: { title: 'test1' } })).toEqual({ _id: '1', title: 'test1' })
+    })
 
-  beforeAll(async () => {
-  })
+    it('Get one book: byId()', async () => {
+        expect(controller.byId({ params: { id: '1' } })).toEqual({ _id: '1', title: 'test1' })
+    })
 
-  it('Should return "200" for a successful login', async () => {
-      expect(Controller.create({_id: '1', title: 'test1'})).toBe({_id: '1', title: 'test1'})
-  })
+    it('Delete one book: delete()', async () => {
+        expect(controller.delete({ params: { id: '1' } })).toEqual({ message: 'Book id: 1 was deleted' })
+    })
 
-  it('Should return "400" for an unsuccessful login', async () => {
-  })
+    it('Update one book: update()', async () => {
+        expect(controller.update({ params: { id: '1' } })).toEqual({ _id: '1', title: 'test1' })
+    })
 })

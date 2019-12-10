@@ -1,22 +1,24 @@
 'use strict'
 
-const Sha256 = require('crypto-js/sha256')
-const Jwt = require('jsonwebtoken')
-const User = require('../models/user')
-const Config = require('../config/env')
- 
+const sha256 = require('crypto-js/sha256')
+const jwt = require('jsonwebtoken')
+const user = require('../models/user')
+const config = require('../config/env')
+
 module.exports.signUp = (req, res) =>
-  createUser(req)
-    .save()
-    .then(user => res.send(user))
-    .catch(err => res.status(400).send({ message: err }))
+  user.create(req.body, (err, doc) => {
+    if (err || doc === null) {
+      return res.status(400).send({ message: err })
+    }
+    res.send(doc)
+  })
 
 module.exports.signIn = (req, res) =>
-  User.findOne({ email: req.body.email, password: Sha256(req.body.password).toString(), active: true }, (err, doc) => {
+  user.findOne({ email: req.body.email, password: sha256(req.body.password).toString()}, (err, doc) => {
     if (err || doc === null) {
       return res.status(400).send({ message: 'User not found' })
     }
-    Jwt.sign(doc.toJSON(), Config.token.secret, { expiresIn: '30m' }, (err, token) => {
+    jwt.sign(doc.toJSON(), config.token.secret, { expiresIn: '30m' }, (err, token) => {
       if (err) {
         return res.status(500).send({ message: 'Error while generating token' })
       }
@@ -25,31 +27,26 @@ module.exports.signIn = (req, res) =>
   })
 
 module.exports.byId = (req, res) =>
-    User.findOne({ _id: req.params.id, active: true }, (err, doc) => {
-      if (err || doc === null) {
-        return res.status(404).send({ message: 'User not found' })
-      }
-      res.send(doc)
-    })
+  user.findOne({ _id: req.params.id}, (err, doc) => {
+    if (err || doc === null) {
+      return res.status(404).send({ message: 'User not found' })
+    }
+    res.send(doc)
+  })
 
 module.exports.update = (req, res) =>
-    User.findOneAndUpdate({ _id: req.params.id, active: true }, req.body, { new: true }, (err, doc) => {
-      if (err || doc === null) {
-        return res.status(500).send({ message: 'Error while updating' })
-      }
-      res.send(doc)
-    })
+  user.findOneAndUpdate({ _id: req.params.id}, req.body, { new: true }, (err, doc) => {
+    if (err || doc === null) {
+      return res.status(500).send({ message: 'Error while updating' })
+    }
+    res.send(doc)
+  })
 
 module.exports.delete = (req, res) =>
-    User.findOneAndUpdate({ _id: req.params.id, active: true }, { active: false }, err => {
-      if (err) {
-        return res.status(500).send({ message: 'Error while deleting' })
-      }
-      res.send({ message: `User id: ${req.params.id} was deleted` })
-    })
+  user.deleteOne({ _id: req.params.id }, err => {
+    if (err) {
+      return res.status(500).send({ message: 'Error while deleting' })
+    }
+    res.send({ message: `User id: ${req.params.id} was deleted` })
+  })
 
-const createUser = req => {
-  const user = new User(req.body)
-  user.password = Sha256(req.body.password)
-  return user
-}

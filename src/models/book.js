@@ -1,13 +1,13 @@
 'use strict'
 
-const Mongoose = require('mongoose')
-const Schema = Mongoose.Schema
+const mongoose = require('mongoose')
+const schema = mongoose.Schema
 
-const bookModel = new Schema({
+const bookModel = new schema({
     title: {
         type: String,
         required: true
     }
 })
 
-module.exports = Mongoose.model('Book', bookModel)
+module.exports = mongoose.model('Book', bookModel)

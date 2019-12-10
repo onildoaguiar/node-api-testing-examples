@@ -1,15 +1,17 @@
 'use strict'
 
-const Book = require('../models/book')
+const book = require('../models/book')
  
 module.exports.create = (req, res) =>
-  createBook(req)
-    .save()
-    .then(user => res.send(user))
-    .catch(err => res.status(400).send({ message: err }))
+    book.create(req.body, (err, doc) => {
+        if (err || doc === null) {
+          return res.status(400).send({ message: err })
+        }
+        res.send(doc)
+      })
 
 module.exports.byId = (req, res) =>
-    Book.findOne({ _id: req.params.id, active: true }, (err, doc) => {
+    book.findOne({ _id: req.params.id, active: true }, (err, doc) => {
       if (err || doc === null) {
         return res.status(404).send({ message: 'Book not found' })
       }
@@ -17,7 +19,7 @@ module.exports.byId = (req, res) =>
     })
 
 module.exports.update = (req, res) =>
-    Book.findOneAndUpdate({ _id: req.params.id, active: true }, req.body, { new: true }, (err, doc) => {
+    book.findOneAndUpdate({ _id: req.params.id, active: true }, req.body, { new: true }, (err, doc) => {
       if (err || doc === null) {
         return res.status(500).send({ message: 'Error while updating' })
       }
@@ -25,11 +27,9 @@ module.exports.update = (req, res) =>
     })
 
 module.exports.delete = (req, res) =>
-    Book.deleteOne({ _id: req.params.id}, err => {
+    book.deleteOne({ _id: req.params.id}, err => {
       if (err) {
         return res.status(500).send({ message: 'Error while deleting' })
       }
       res.send({ message: `Book id: ${req.params.id} was deleted` })
     })
-
-const createBook = req => new Book(req.body)

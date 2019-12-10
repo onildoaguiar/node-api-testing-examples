@@ -1,7 +1,7 @@
 'use strict'
 
-const User = require('./user.json.js')
+const user = require('./user.json')
 
 module.exports = {
-  user: User
+  user
 }

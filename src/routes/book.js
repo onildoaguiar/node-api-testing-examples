@@ -1,14 +1,14 @@
 'use strict'
 
-const Express = require('express')
-const Bearer = require('express-authorization-bearer')
-const Auth = require('../auth')
-const Controller = require('../controllers/book')
+const express = require('express')
+const bearer = require('express-authorization-bearer')
+const auth = require('../auth')
+const controller = require('../controllers/book')
 
 const BASE_URL = '/api/v1/book'
 
-module.exports = Express.Router()
-  .post(`${BASE_URL}/create`, Controller.create)
-  .get(`${BASE_URL}/:id`, Bearer, Auth, Controller.byId)
-  .put(`${BASE_URL}/:id`, Bearer, Auth, Controller.update)
-  .delete(`${BASE_URL}/:id`, Bearer, Auth ,Controller.delete)
+module.exports = express.Router()
+  .post(`${BASE_URL}/create`, controller.create)
+  .get(`${BASE_URL}/:id`, bearer, auth, controller.byId)
+  .put(`${BASE_URL}/:id`, bearer, auth, controller.update)
+  .delete(`${BASE_URL}/:id`, bearer, auth ,controller.delete)

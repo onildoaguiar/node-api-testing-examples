@@ -1,7 +1,7 @@
 'use strict'
 
 const Jwt = require('jsonwebtoken')
-const Config = require('../config/env')
+const Config = require('./config/env')
 const TokenExpiredError = Jwt.TokenExpiredError
 const JsonWebTokenError = Jwt.JsonWebTokenError
 

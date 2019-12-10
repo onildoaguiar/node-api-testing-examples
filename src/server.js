@@ -1,15 +1,15 @@
 'use strict'
 
-const Express = require('express')
-const BodyParser = require('body-parser')
-const User = require('./routes/user')
-const Book = require('./routes/user')
+const express = require('express')
+const bodyParser = require('body-parser')
+const user = require('./routes/book')
+const book = require('./routes/user')
 
-const Server = Express()
+const Server = express()
 
 module.exports = () =>
   Server
-    .use(BodyParser.json())
-    .use('/', User)
-    .use('/', Book)
+    .use(bodyParser.json())
+    .use('/', user)
+    .use('/', book)
 
